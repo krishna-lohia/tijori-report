@@ -1,0 +1,22 @@
+{
+  "name": "tijori-report",
+  "version": "1.0.0",
+  "description": "Tijori Daily Investor Report — automated daily report for long-term equity investors",
+  "main": "generate-report.js",
+  "scripts": {
+    "generate": "node generate-report.js",
+    "dev": "node generate-report.js --dry-run",
+    "serve": "node serve.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.89.0",
+    "@otplib/preset-default": "^12.0.1",
+    "axios": "^1.7.0",
+    "cheerio": "^1.0.0",
+    "dotenv": "^17.4.2",
+    "kiteconnect": "^5.2.0",
+    "puppeteer": "^22.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

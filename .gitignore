@@ -1,0 +1,7 @@
+node_modules/
+output/
+db/
+config.js
+.env
+*.log
+.DS_Store
