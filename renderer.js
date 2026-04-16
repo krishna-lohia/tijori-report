@@ -232,6 +232,21 @@ function capexList(items, max = 10) {
   }).join('');
 }
 
+function tweetAge(tweetId) {
+  if (!tweetId) return null;
+  try {
+    const TWITTER_EPOCH = 1288834974657n;
+    const ms = Number((BigInt(tweetId) >> 22n) + TWITTER_EPOCH);
+    const diffMs = Date.now() - ms;
+    const diffH  = Math.floor(diffMs / 3_600_000);
+    const diffD  = Math.floor(diffH / 24);
+    if (diffH < 1)  return 'just now';
+    if (diffH < 24) return `${diffH}h ago`;
+    if (diffD === 1) return 'yesterday';
+    return `${diffD}d ago`;
+  } catch (_) { return null; }
+}
+
 // Social: full tweet card — author, text, image, metrics, link to X
 function socialList(items, max = 6) {
   if (!items || items.length === 0) return emptyState('No trending names on social media today');
@@ -241,6 +256,7 @@ function socialList(items, max = 6) {
       ? c.tweetText.replace(/https?:\/\/t\.co\/\S+/g, '').trim()
       : null;
 
+    const age = tweetAge(c.tweetId);
     const authorBlock = (c.authorName || c.authorHandle)
       ? `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
           ${c.authorImageUrl
@@ -248,7 +264,7 @@ function socialList(items, max = 6) {
             : `<div style="width:36px;height:36px;border-radius:50%;background:#e0e0e0;flex-shrink:0;"></div>`}
           <div>
             <div style="font-weight:700;font-size:14px;color:#14171A;">${c.authorName || ''}</div>
-            ${c.authorHandle ? `<div style="font-size:12px;color:#657786;">@${c.authorHandle}</div>` : ''}
+            ${c.authorHandle ? `<div style="font-size:12px;color:#657786;">@${c.authorHandle}${age ? ` · ${age}` : ''}</div>` : ''}
           </div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:4px;">
             <span style="font-size:13px;color:#1DA1F2;font-weight:700;">&#120143;</span>
@@ -658,7 +674,7 @@ function renderReport(data) {
 
   <header class="nl-header">
     <div class="nl-brand">
-      <img src="${TIJORI_LOGO_B64}" alt="Tijori Finance" style="height:47px;display:block;margin-bottom:4px;">
+      <img src="${TIJORI_LOGO_B64}" alt="Tijori Finance" style="height:22px;width:auto;display:block;margin-bottom:4px;object-fit:contain;">
       <span class="nl-brand-sub">Daily Investor Report</span>
     </div>
     <div class="nl-header-right">

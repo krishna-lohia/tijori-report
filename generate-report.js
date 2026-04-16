@@ -112,6 +112,9 @@ async function run() {
     const narrative = await generateNarrative(reportData);
     reportData.narrative = narrative;
 
+    // Save narrative separately so it survives re-renders
+    fs.writeFileSync(path.join(outputDir, 'narrative.json'), JSON.stringify(narrative, null, 2));
+
     if (DRY_RUN) {
       console.log('\n🔍 Dry run — skipping HTML render.');
       return;
